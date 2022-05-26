@@ -1,23 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useState } from "react";
+
+const tipos = {
+  artifacts:"Artefactos",
+  boos:"Jefes",
+  characters:"Personajes",
+  consumables:"Consumibles",
+  domains:"Dominios",
+  elements:"Elementos",
+  enemies:"Enemigos",
+  materials:"Materiales",
+  nations:"Naciones",
+  weapons:"Armas",
+}
 
 function App() {
+
+  const [genshinState, setGenshinState] = useState({
+    types:[]
+  });
+
+  const fetchGenshinApi = async (item, url = "https://api.genshin.dev/") => {
+  const respuesta = await fetch(url);
+  if (item === "types"){
+    setGenshinState({
+      types:respJson,types,
+
+  });
+ }else{
+   setGenshinState({
+     [item]: respJson
+   });
+ }
+ };
+ 
+
+  fetchGenshinApi();
+
+  const handleChangeType = ({target}) => {
+    const url = `https://api.genshin.dev/$(target.value)`;
+    fetchGenshinApi(target.value, url);
+    console.log(genshinState);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App container">
+      <h1>Genshin Impact Dex</h1>
+      <hr/>
+      <select name="types" onChange={handleChangeType}>
+        <option value="">Seleccione un elemento</option>
+
+        {genshinState.types.map((type) =>(
+          <option key={type} value={type}>
+            {tipos[type]}
+            </option>
+        ))}
+
+        <option value="artifacts">artifacts</option>
+        
+      </select>
     </div>
   );
 }
