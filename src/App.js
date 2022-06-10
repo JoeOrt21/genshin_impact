@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const tipos = {
   artifacts:"Artefactos",
-  boos:"Jefes",
+  boss:"Jefes",
   characters:"Personajes",
   consumables:"Consumibles",
   domains:"Dominios",
@@ -17,28 +17,31 @@ const tipos = {
 function App() {
 
   const [genshinState, setGenshinState] = useState({
-    types:[]
+    types:[],
   });
 
   const fetchGenshinApi = async (item, url = "https://api.genshin.dev/") => {
   const respuesta = await fetch(url);
+  const respJson = await respuesta.json();
   if (item === "types"){
     setGenshinState({
-      types:respJson,types,
+      ...genshinState,
+      types:respJson.types,
 
   });
  }else{
    setGenshinState({
-     [item]: respJson
+    ...genshinState,
+     [item]: respJson,
    });
  }
  };
  
 
-  fetchGenshinApi();
+  fetchGenshinApi("types");
 
   const handleChangeType = ({target}) => {
-    const url = `https://api.genshin.dev/$(target.value)`;
+    const url = `https://api.genshin.dev/${target.value}`;
     fetchGenshinApi(target.value, url);
     console.log(genshinState);
   };
@@ -56,7 +59,7 @@ function App() {
             </option>
         ))}
 
-        <option value="artifacts">artifacts</option>
+        
         
       </select>
     </div>
