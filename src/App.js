@@ -30,10 +30,9 @@ function App() {
 
   });
  }else{
-   setGenshinState({
-    ...genshinState,
-     [item]: respJson,
-   });
+
+   setGenshinState({types:[...genshinState.types],[item]:respJson});
+   
  }
     console.log(respJson);
  };
